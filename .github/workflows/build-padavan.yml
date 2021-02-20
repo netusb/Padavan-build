@@ -7,10 +7,6 @@ on:
   push:
     tags:
     - 'v*'
-  #  branches: 
-  #    - master
-#  schedule:
-#    - cron: 0 8 * * 5
   watch:
     types: [started]
 
@@ -31,7 +27,7 @@ jobs:
         file libssl-dev wget libelf-dev ecj fastjar java-propose-classpath
     - name: Clone source code
       run: |
-        git clone --depth=1 https://github.com/ysurac/openmptcprouter.git /opt/
+        git clone https://github.com/ysurac/openmptcprouter.git /opt/openmptcprouter
         cd /opt/openmptcprouter
         OMR_TARGET="p2w_r619ac" ./build.sh V=s
     - name: Build Firmware
