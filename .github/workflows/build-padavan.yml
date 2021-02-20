@@ -31,17 +31,16 @@ jobs:
         file libssl-dev wget libelf-dev ecj fastjar java-propose-classpath
     - name: Clone source code
       run: |
-        git clone --depth=1 https://github.com/ysurac/openmptcprouter.git /opt/rt-n56u
-        cd /opt/rt-n56u/openmptcprouter
-        mkdir -p /opt/images/
+        git clone --depth=1 https://github.com/ysurac/openmptcprouter.git /opt/
+        cd /opt/openmptcprouter
         OMR_TARGET="p2w_r619ac" ./build.sh V=s
     - name: Build Firmware
       run: |
-        cd /opt/rt-n56u/openmptcprouter/p2w_r619ac/source/bin
-        sudo mv -f ./*.bin /opt/images/
+        mkdir -p /opt/images/
+        cd /opt/openmptcprouter/p2w_r619ac/source/bin
+        sudo mv -f /opt/openmptcprouter/p2w_r619ac/source/bin/*.bin /opt/images/
     - name : Upload packages
       uses: actions/upload-artifact@master
-      if: always()
       with:
         name: Padavan-packages
         path: /opt/images
