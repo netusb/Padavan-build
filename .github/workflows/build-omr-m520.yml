@@ -40,7 +40,7 @@ jobs:
       run: |
         mkdir /opt/images/
         cd /home/runner/
-        tar zcvf /home/runner/openmptcprouter.tar.gz /home/runner/openmptcprouter/arm_cortex-a15_neon-vfpv4/source/bin/
+        tar zcvf /home/runner/openmptcprouter.tar.gz /home/runner/openmptcprouter/arm_cortex-a15_neon-vfpv4/source/bin
         sudo mv -f /home/runner/openmptcprouter.tar.gz /opt/images/
     - name : Upload packages
       uses: actions/upload-artifact@master
