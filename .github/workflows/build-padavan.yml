@@ -31,9 +31,11 @@ jobs:
         git checkout master
         OMR_TARGET="arm_cortex-a15_neon-vfpv4" OMR_FEED_SRC="master" ./build.sh
         sh patch/one.patch.sh
-        
-        make -j16 download V=s
     - name: Build Firmware
+      run: |
+        make -j16 download V=s
+        make -j16  V=s
+    - name: update Firmware
       run: |
         mkdir /opt/images/
         cd /home/runner/
