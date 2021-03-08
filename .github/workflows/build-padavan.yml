@@ -1,5 +1,5 @@
 #修改TNAME: K2P-5.0 中的K2P-5.0为你需要编译的型号，注意名称要与configs/templates/目录下的名字相同
-name: Build Padavan
+name: Build omr-
 
 on: 
   release:
@@ -22,21 +22,25 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo apt-get update
-        sudo apt-get install subversion g++ zlib1g-dev build-essential git \
-        python python3 python3-distutils libncurses5-dev gawk gettext unzip \
-        file libssl-dev wget libelf-dev ecj fastjar java-propose-classpath
+        sudo apt-get install subversion g++ zlib1g-dev build-essential git python python3 python3-distutils libncurses5-dev gawk gettext unzip  file libssl-dev wget libelf-dev ecj fastjar java-propose-classpath
+        sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync
     - name: Clone source code
       run: |
-        git clone https://github.com/ysurac/openmptcprouter.git /opt/openmptcprouter
-        cd /opt/openmptcprouter
-        OMR_TARGET="p2w_r619ac" ./build.sh V=s
+        git clone https://github.com/netusb/openmptcprouter.git /home/runner/openmptcprouter
+        cd /openmptcprouter
+        git checkout master
+        OMR_TARGET="arm_cortex-a15_neon-vfpv4" OMR_FEED_SRC="master" ./build.sh
+        sh patch/one.patch.sh
+        
+        make -j16 download V=s
     - name: Build Firmware
       run: |
-        mkdir -p /opt/images/
-        cd /opt/openmptcprouter/p2w_r619ac/source/bin
-        sudo mv -f /opt/openmptcprouter/p2w_r619ac/source/bin/*.bin /opt/images/
+        mkdir /opt/images/
+        cd /home/runner/
+        tar zcvf openmptcprouter.tar.gz openmptcprouter
+        sudo mv -f /home/runner/openmptcprouter.tar.gz /opt/images/
     - name : Upload packages
       uses: actions/upload-artifact@master
       with:
-        name: Padavan-packages
+        name: tar.gz-packages
         path: /opt/images
